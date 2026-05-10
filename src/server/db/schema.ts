@@ -8,8 +8,14 @@ export const album = sqliteTable("album", (d) => ({
 		.primaryKey()
 		.$defaultFn(() => crypto.randomUUID()),
 	mahasiswa_id: d.text({ length: 255 }).references(() => mahasiswa.id),
-	semester: d.text({ length: 255 }),
+	semester: d.integer(),
+	type: d.text({ length: 255 }), // 'KRS', 'KHS', 'KARTU_UJIAN'
 	file_path: d.text({ length: 255 }),
+	createdAt: d
+		.integer({ mode: "timestamp" })
+		.default(sql`(unixepoch())`)
+		.notNull(),
+	updatedAt: d.integer({ mode: "timestamp" }).$onUpdate(() => new Date()),
 }))
 
 export const mahasiswa = sqliteTable("mahasiswa", (d) => ({
@@ -18,20 +24,28 @@ export const mahasiswa = sqliteTable("mahasiswa", (d) => ({
 		.notNull()
 		.primaryKey()
 		.$defaultFn(() => crypto.randomUUID()),
-	nim: d.text({ length: 255 }),
+	nim: d.text({ length: 255 }).unique(),
 	mahasiswa_id: d.text({ length: 255 }).references(() => user.id),
 	jurusan_id: d.text({ length: 255 }).references(() => jurusan.id),
 	fakultas_id: d.text({ length: 255 }).references(() => fakultas.id),
 }));
 
 export const fakultas = sqliteTable("fakultas", (d) => ({
-	id: d.text({ length: 255 }),
-	nama: d.text({ length: 255 })
+	id: d
+		.text({ length: 255 })
+		.notNull()
+		.primaryKey()
+		.$defaultFn(() => crypto.randomUUID()),
+	nama: d.text({ length: 255 }).notNull()
 }));
 
 export const jurusan = sqliteTable("jurusan", (d) => ({
-	id: d.text({ length: 255 }),
-	nama: d.text({ length: 255 })
+	id: d
+		.text({ length: 255 })
+		.notNull()
+		.primaryKey()
+		.$defaultFn(() => crypto.randomUUID()),
+	nama: d.text({ length: 255 }).notNull()
 }));
 
 // Better Auth core tables
@@ -45,6 +59,7 @@ export const user = sqliteTable("user", (d) => ({
 	email: d.text({ length: 255 }).notNull().unique(),
 	emailVerified: d.integer({ mode: "boolean" }).default(false),
 	image: d.text({ length: 255 }),
+	role: d.text({ length: 255 }).default("mahasiswa"),
 	createdAt: d
 		.integer({ mode: "timestamp" })
 		.default(sql`(unixepoch())`)
