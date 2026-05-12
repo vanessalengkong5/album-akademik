@@ -24,7 +24,11 @@ export async function POST(request: NextRequest) {
 		const buffer = Buffer.from(bytes);
 
 		const timestamp = Date.now();
-		const filename = `${timestamp}-${file.name.replace(/\s+/g, "_")}`;
+		// Sanitize filename: replace spaces with underscores, remove special chars that cause issues on Windows
+		const sanitizedName = file.name
+			.replace(/\s+/g, "_")
+			.replace(/[()\[\]{}#%&!@^=+~`'";<>,]/g, "");
+		const filename = `${timestamp}-${sanitizedName}`;
 		const path = join(process.cwd(), "public", "uploads", filename);
 
 		await mkdir(join(process.cwd(), "public", "uploads"), { recursive: true });
