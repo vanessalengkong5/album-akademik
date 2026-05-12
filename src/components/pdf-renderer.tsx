@@ -47,6 +47,7 @@ export function PDFRenderer({ url, title, onImagesReady }: PDFRendererProps) {
 					canvas.height = viewport.height;
 					await page.render({
 						canvasContext: ctx,
+						canvas,
 						viewport,
 						intent: "print",
 					}).promise;
