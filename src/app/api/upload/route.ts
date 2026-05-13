@@ -2,6 +2,9 @@ import { writeFile, mkdir } from "node:fs/promises";
 import { join } from "node:path";
 import { type NextRequest, NextResponse } from "next/server";
 import { auth } from "@/server/better-auth";
+import { db } from "@/server/db";
+import { mahasiswa } from "@/server/db/schema";
+import { eq } from "drizzle-orm";
 
 export async function POST(request: NextRequest) {
 	const session = await auth.api.getSession({
@@ -23,15 +26,22 @@ export async function POST(request: NextRequest) {
 		const bytes = await file.arrayBuffer();
 		const buffer = Buffer.from(bytes);
 
-		const timestamp = Date.now();
-		// Sanitize filename: replace spaces with underscores, remove special chars that cause issues on Windows
-		const sanitizedName = file.name
-			.replace(/\s+/g, "_")
-			.replace(/[()\[\]{}#%&!@^=+~`'";<>,]/g, "");
-		const filename = `${timestamp}-${sanitizedName}`;
-		const path = join(process.cwd(), "public", "uploads", filename);
+		const type = (formData.get("type") as string) || "dokumen";
+		const semester = (formData.get("semester") as string) || "0";
 
-		await mkdir(join(process.cwd(), "public", "uploads"), { recursive: true });
+		const mhs = await db.query.mahasiswa.findFirst({
+			where: eq(mahasiswa.mahasiswa_id, session.user.id),
+		});
+
+		const id = mhs?.nim ?? session.user.id;
+		const timestamp = Date.now();
+
+		const typeStr = type.toLowerCase().replace(/_/g, "-");
+		const filename = `${id}-${typeStr}-semester-${semester}-${timestamp}.pdf`;
+		const uploadsDir = join(process.cwd(), "public", "uploads");
+		const path = join(uploadsDir, filename);
+
+		await mkdir(uploadsDir, { recursive: true });
 
 		await writeFile(path, buffer);
 

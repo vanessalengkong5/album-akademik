@@ -26,7 +26,7 @@ export default function SemesterPage({
 		semester,
 	});
 
-	const getFileByType = (type: "KRS" | "KHS" | "KARTU_UJIAN") => {
+	const getFileByType = (type: "KRS" | "KHS" | "KARTU_UJIAN" | "KMK") => {
 		return files?.find((f) => f.type === type);
 	};
 
@@ -37,8 +37,8 @@ export default function SemesterPage({
 					<Skeleton className="h-10 w-48" />
 					<Skeleton className="h-4 w-64" />
 				</div>
-				<div className="grid gap-6 md:grid-cols-3">
-					{[1, 2, 3].map((i) => (
+				<div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+					{[1, 2, 3, 4].map((i) => (
 						<Skeleton key={i} className="h-48 w-full rounded-xl" />
 					))}
 				</div>
@@ -46,7 +46,7 @@ export default function SemesterPage({
 		);
 	}
 
-	const isComplete = files?.length === 3;
+	const isComplete = files?.length === 4;
 
 	return (
 		<div className="fade-in animate-in space-y-8 duration-500">
@@ -64,7 +64,8 @@ export default function SemesterPage({
 					<CheckCircle2 className="size-4" />
 					<AlertTitle className="font-bold">Semua berkas lengkap!</AlertTitle>
 					<AlertDescription className="text-xs">
-						Anda telah mengunggah KRS, KHS, dan Kartu Ujian untuk semester ini.
+						Anda telah mengunggah KRS, KHS, Kartu Ujian, dan KMK untuk semester
+						ini.
 					</AlertDescription>
 				</Alert>
 			) : (
@@ -81,7 +82,7 @@ export default function SemesterPage({
 				</Alert>
 			)}
 
-			<div className="grid gap-6 md:grid-cols-3">
+			<div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
 				<UploadForm
 					existingFile={getFileByType("KRS")}
 					semester={semester}
@@ -98,6 +99,12 @@ export default function SemesterPage({
 					existingFile={getFileByType("KARTU_UJIAN")}
 					semester={semester}
 					type="KARTU_UJIAN"
+					onSuccess={refetch}
+				/>
+				<UploadForm
+					existingFile={getFileByType("KMK")}
+					semester={semester}
+					type="KMK"
 					onSuccess={refetch}
 				/>
 			</div>

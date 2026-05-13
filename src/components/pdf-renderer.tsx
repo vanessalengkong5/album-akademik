@@ -33,7 +33,8 @@ export function PDFRenderer({ url, title, onImagesReady }: PDFRendererProps) {
 		async function loadPDF() {
 			try {
 				setLoading(true);
-				const pdf = await pdfjs.getDocument(url).promise;
+				const normalizedUrl = encodeURI(decodeURI(url));
+				const pdf = await pdfjs.getDocument(normalizedUrl).promise;
 				const pageImages: string[] = [];
 
 				for (let i = 1; i <= pdf.numPages; i++) {

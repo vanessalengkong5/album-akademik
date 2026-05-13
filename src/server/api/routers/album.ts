@@ -25,7 +25,7 @@ export const albumRouter = createTRPCRouter({
 		.input(
 			z.object({
 				semester: z.number(),
-				type: z.enum(["KRS", "KHS", "KARTU_UJIAN"]),
+				type: z.enum(["KRS", "KHS", "KARTU_UJIAN", "KMK"]),
 				filePath: z.string(),
 			}),
 		)

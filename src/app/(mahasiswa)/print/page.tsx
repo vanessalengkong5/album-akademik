@@ -100,6 +100,7 @@ export default function PrintPage() {
 				KRS: "KRS",
 				KHS: "KHS",
 				KARTU_UJIAN: "Kartu Ujian",
+				KMK: "KMK",
 			};
 
 			for (const file of filesWithContent) {
@@ -218,22 +219,28 @@ export default function PrintPage() {
 					</p>
 				</div>
 
-				<table className="w-full border-collapse border border-gray-300 text-[11px]">
+				<table
+					className="w-full border-collapse border border-gray-300 text-[9px]"
+					style={{ tableLayout: "fixed" }}
+				>
 					<thead>
 						<tr className="bg-gray-100">
-							<th className="w-14 border border-gray-300 p-2 text-center font-bold uppercase">
+							<th className="w-[35px] border border-gray-300 p-1 text-center font-bold uppercase">
 								Smt
 							</th>
-							<th className="border border-gray-300 p-2 text-left font-bold uppercase">
+							<th className="border border-gray-300 p-1 text-left font-bold uppercase">
 								KRS
 							</th>
-							<th className="border border-gray-300 p-2 text-left font-bold uppercase">
+							<th className="border border-gray-300 p-1 text-left font-bold uppercase">
 								KHS
 							</th>
-							<th className="border border-gray-300 p-2 text-left font-bold uppercase">
+							<th className="border border-gray-300 p-1 text-left font-bold uppercase">
 								Kartu Ujian
 							</th>
-							<th className="w-20 border border-gray-300 p-2 text-center font-bold uppercase">
+							<th className="border border-gray-300 p-1 text-left font-bold uppercase">
+								KMK
+							</th>
+							<th className="w-[65px] border border-gray-300 p-1 text-center font-bold uppercase">
 								Status
 							</th>
 						</tr>
@@ -243,7 +250,8 @@ export default function PrintPage() {
 							const krs = s.files.find((f) => f.type === "KRS");
 							const khs = s.files.find((f) => f.type === "KHS");
 							const kartu = s.files.find((f) => f.type === "KARTU_UJIAN");
-							const isComplete = krs && khs && kartu;
+							const kmk = s.files.find((f) => f.type === "KMK");
+							const isComplete = krs && khs && kartu && kmk;
 
 							return (
 								<tr
@@ -253,36 +261,68 @@ export default function PrintPage() {
 									<td className="border border-gray-300 bg-gray-50 p-2 text-center font-bold">
 										{s.semester}
 									</td>
-									<td className="border border-gray-300 p-2">
+									<td className="border border-gray-300 p-1">
 										{krs ? (
-											<div className="flex items-center gap-1">
-												<FileText className="size-3 shrink-0 text-blue-500" />
-												<span className="max-w-[140px] truncate">
-													{krs.file_path?.split("/").pop()}
+											<div className="flex items-center gap-1 overflow-hidden">
+												<FileText className="size-2.5 shrink-0 text-blue-500" />
+												<span className="truncate text-[8px] text-gray-600">
+													{decodeURIComponent(
+														krs.file_path?.split("/").pop() ?? "",
+													)
+														.split("-")
+														.slice(1, -1)
+														.join("-") || "Berkas"}
 												</span>
 											</div>
 										) : (
 											<span className="text-gray-300 italic">Kosong</span>
 										)}
 									</td>
-									<td className="border border-gray-300 p-2">
+									<td className="border border-gray-300 p-1">
 										{khs ? (
-											<div className="flex items-center gap-1">
-												<FileText className="size-3 shrink-0 text-green-500" />
-												<span className="max-w-[140px] truncate">
-													{khs.file_path?.split("/").pop()}
+											<div className="flex items-center gap-1 overflow-hidden">
+												<FileText className="size-2.5 shrink-0 text-green-500" />
+												<span className="truncate text-[8px] text-gray-600">
+													{decodeURIComponent(
+														khs.file_path?.split("/").pop() ?? "",
+													)
+														.split("-")
+														.slice(1, -1)
+														.join("-") || "Berkas"}
 												</span>
 											</div>
 										) : (
 											<span className="text-gray-300 italic">Kosong</span>
 										)}
 									</td>
-									<td className="border border-gray-300 p-2">
+									<td className="border border-gray-300 p-1">
 										{kartu ? (
-											<div className="flex items-center gap-1">
-												<FileText className="size-3 shrink-0 text-orange-500" />
-												<span className="max-w-[140px] truncate">
-													{kartu.file_path?.split("/").pop()}
+											<div className="flex items-center gap-1 overflow-hidden">
+												<FileText className="size-2.5 shrink-0 text-orange-500" />
+												<span className="truncate text-[8px] text-gray-600">
+													{decodeURIComponent(
+														kartu.file_path?.split("/").pop() ?? "",
+													)
+														.split("-")
+														.slice(1, -1)
+														.join("-") || "Berkas"}
+												</span>
+											</div>
+										) : (
+											<span className="text-gray-300 italic">Kosong</span>
+										)}
+									</td>
+									<td className="border border-gray-300 p-1">
+										{kmk ? (
+											<div className="flex items-center gap-1 overflow-hidden">
+												<FileText className="size-2.5 shrink-0 text-purple-500" />
+												<span className="truncate text-[8px] text-gray-600">
+													{decodeURIComponent(
+														kmk.file_path?.split("/").pop() ?? "",
+													)
+														.split("-")
+														.slice(1, -1)
+														.join("-") || "Berkas"}
 												</span>
 											</div>
 										) : (

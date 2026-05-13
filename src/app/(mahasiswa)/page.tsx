@@ -18,7 +18,7 @@ export default function DashboardPage() {
 	const { data: allFiles } = api.album.getAllFiles.useQuery();
 	const router = useRouter();
 
-	const totalRequired = 14 * 3;
+	const totalRequired = 14 * 4;
 	const uploadedCount = allFiles?.length ?? 0;
 	const progress = (uploadedCount / totalRequired) * 100;
 
@@ -74,7 +74,7 @@ export default function DashboardPage() {
 					</CardHeader>
 					<CardContent>
 						<div className="font-bold text-2xl">
-							{semesterStatus.filter((s) => s.count === 3).length}
+							{semesterStatus.filter((s) => s.count === 4).length}
 						</div>
 						<p className="mt-1 text-muted-foreground text-xs">
 							Dari 14 semester
@@ -89,7 +89,7 @@ export default function DashboardPage() {
 					</CardHeader>
 					<CardContent>
 						<div className="font-bold text-2xl">
-							{semesterStatus.filter((s) => s.count > 0 && s.count < 3).length}
+							{semesterStatus.filter((s) => s.count > 0 && s.count < 4).length}
 						</div>
 						<p className="mt-1 text-muted-foreground text-xs">
 							Semester dengan berkas parsial
@@ -112,7 +112,7 @@ export default function DashboardPage() {
 								<Link key={s.semester} href={`/semester/${s.semester}`}>
 									<div
 										className={`flex flex-col items-center justify-center rounded-xl border p-3 transition-all hover:scale-105${
-											s.count === 3
+											s.count === 4
 												? "border-green-500/20 bg-green-500/10 text-green-700"
 												: s.count > 0
 													? "border-orange-500/20 bg-orange-500/10 text-orange-700"
@@ -125,7 +125,7 @@ export default function DashboardPage() {
 										</span>
 										<span className="font-bold text-xl">{s.semester}</span>
 										<div className="mt-1 flex gap-0.5">
-											{[1, 2, 3].map((i) => (
+											{[1, 2, 3, 4].map((i) => (
 												<div
 													key={i}
 													className={`size-1 rounded-full ${i <= s.count ? "bg-current" : "bg-current/20"}`}

@@ -20,7 +20,7 @@ import { toast } from "sonner";
 
 interface UploadFormProps {
 	semester: number;
-	type: "KRS" | "KHS" | "KARTU_UJIAN";
+	type: "KRS" | "KHS" | "KARTU_UJIAN" | "KMK";
 	existingFile?: {
 		id: string | null;
 		file_path: string | null;
@@ -68,6 +68,8 @@ export function UploadForm({
 		try {
 			const formData = new FormData();
 			formData.append("file", file);
+			formData.append("semester", semester.toString());
+			formData.append("type", type);
 
 			const response = await fetch("/api/upload", {
 				method: "POST",
@@ -123,7 +125,12 @@ export function UploadForm({
 							<div className="flex items-center gap-2 overflow-hidden">
 								<CheckCircle2 className="size-4 shrink-0 text-green-500" />
 								<span className="truncate font-medium text-xs">
-									{existingFile.file_path?.split("/").pop() ?? "Berkas"}
+									{decodeURIComponent(
+										existingFile.file_path?.split("/").pop() ?? "",
+									)
+										.split("-")
+										.slice(1, -1)
+										.join("-") || "Berkas"}
 								</span>
 							</div>
 							<Button
@@ -176,7 +183,11 @@ export function UploadForm({
 					<div className="flex w-full gap-2">
 						<Button variant="outline" className="h-8 flex-1 text-xs" asChild>
 							<a
-								href={existingFile.file_path ?? "#"}
+								href={
+									existingFile.file_path
+										? encodeURI(decodeURI(existingFile.file_path))
+										: "#"
+								}
 								target="_blank"
 								rel="noreferrer"
 							>
