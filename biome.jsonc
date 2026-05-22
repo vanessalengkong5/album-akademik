@@ -6,12 +6,21 @@
 		"useIgnoreFile": true,
 		"clientKind": "git"
 	},
+	// "assist": {
+	// 	"enabled": true,
+	// 	"actions": {
+	// 		"recommended": true,
+	// 		"source": {
+	// 			"recommended": true,
+	// 			"organizeImports": "on",
+	// 			"useSortedAttributes": "on"
+	// 		}
+	// 	}
+	// },
 	"assist": {
 		"enabled": true,
 		"actions": {
-			"recommended": true,
 			"source": {
-				"recommended": true,
 				"organizeImports": "on",
 				"useSortedAttributes": "on"
 			}
@@ -20,6 +29,21 @@
 	"formatter": {
 		"enabled": true
 	},
+	// "linter": {
+	// 	"enabled": true,
+	// 	"rules": {
+	// 		"recommended": true,
+	// 		"nursery": {
+	// 			"useSortedClasses": {
+	// 				"level": "warn",
+	// 				"fix": "safe",
+	// 				"options": {
+	// 					"functions": ["clsx", "cva", "cn"]
+	// 				}
+	// 			}
+	// 		}
+	// 	}
+	// },
 	"linter": {
 		"enabled": true,
 		"rules": {
@@ -27,7 +51,6 @@
 			"nursery": {
 				"useSortedClasses": {
 					"level": "warn",
-					"fix": "safe",
 					"options": {
 						"functions": ["clsx", "cva", "cn"]
 					}
